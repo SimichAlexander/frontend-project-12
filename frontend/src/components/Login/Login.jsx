@@ -3,8 +3,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../features/auth/authSlice.js";
-import { useLoginMutation } from "../app/services/authApi.js";
+import { setCredentials } from "../../app/slices/auth/authSlice.js";
+import { useLoginMutation } from "../../app/services/authApi.js";
+import { useEffect } from "react";
 
 const SignInSchema = Yup.object().shape({
   username: Yup.string().min(3, "Too Short!").required("Required"),
@@ -13,20 +14,16 @@ const SignInSchema = Yup.object().shape({
 
 const Login = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [login] = useLoginMutation();
 
-  const navigate = useNavigate();
-  const goChat = () => navigate("/");
-
-  const loginUser = async (data) => {
-    // const res = await axios.post("/api/v1/login", data);
-    const res = await login(data);
-    dispatch(setCredentials(res));
-
-    localStorage.setItem("token", res.data.token);
-    goChat();
-  };
+  // useEffect(() => {
+  //   axios
+  //     .post("/api/v1/signup", { username: "qqqqq", password: "qqqqq" })
+  //     .then((response) => {
+  //       console.log(response.data); // => { token: ..., username: 'newuser' }
+  //     });
+  // }, []);
 
   return (
     <Formik
@@ -34,7 +31,11 @@ const Login = () => {
       validationSchema={SignInSchema}
       onSubmit={async (values, { setFieldError, setSubmitting }) => {
         try {
-          await loginUser(values);
+          const res = await login(values);
+          dispatch(setCredentials(res.data));
+          localStorage.setItem("username", res.data.username);
+          localStorage.setItem("token", res.data.token);
+          navigate("/");
         } catch (error) {
           setFieldError("general", "Неверные имя пользователя или пароль");
         }

@@ -3,8 +3,10 @@ import { Outlet } from "react-router-dom";
 const Layout = () => {
   return (
     <>
-      Hexlet Chat
-      <Outlet />
+      <header>Hexlet Chat</header>
+      <div>
+        <Outlet />
+      </div>
     </>
   );
 };

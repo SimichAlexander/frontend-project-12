@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .chat {
+    flex: 1;
+    padding: 20px;
+  }
