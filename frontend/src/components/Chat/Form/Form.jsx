@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import "./Form.css";
 import { useSelector, useDispatch } from "react-redux";
-import { addMessage } from "../../../../app/slices/chat/messagesSlice";
+import { addMessage } from "../../../app/slices/chat/messagesSlice";
 
 const Form = () => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const Form = () => {
           },
         }
       );
-      console.log(response.data); // => { id: '1', body: 'new message', channelId: '1', username: 'admin }
+      console.log("FORM", response.data); // => { id: '1', body: 'new message', channelId: '1', username: 'admin }
       setCurrentMessage("");
       // dispatch(addMessage(response.data));
     }

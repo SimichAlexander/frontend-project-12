@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 const Layout = () => {
   return (
     <>
-      <header>Hexlet Chat</header>
+      <h1>Hexlet Chat</h1>
       <div>
         <Outlet />
       </div>

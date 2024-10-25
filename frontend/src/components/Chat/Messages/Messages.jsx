@@ -1,4 +1,3 @@
-import React from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setMessages,
   addMessage,
-} from "../../../../app/slices/chat/messagesSlice.js";
+} from "../../../app/slices/chat/messagesSlice.js";
 import "./Messages.css";
 
 const Messages = ({ socket }) => {
@@ -15,12 +14,12 @@ const Messages = ({ socket }) => {
   const messages = useSelector((state) => state.messages.messages);
   const activeChannel = useSelector((state) => state.channels.activeChannel);
 
-  socket.on("newMessage", (payload) => {
-    console.log("QWEQWEWEQWEEWEW");
-    // console.log("newMessage", payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
-    // dispatch(addMessage(payload));
-    // console.log("messages!!!! = ", messages);
-  });
+  // socket.on("newMessage", (payload) => {
+  //   console.log("Hello from socket");
+  //   console.log("newMessage", payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
+  //   // dispatch(addMessage(payload));
+  //   // console.log("messages!!!! = ", messages);
+  // });
 
   useEffect(() => {
     async function fetchData() {
