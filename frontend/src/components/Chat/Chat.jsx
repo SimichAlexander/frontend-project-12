@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import Channels from "./Channels/Channels.jsx";
 import Messages from "./Messages/Messages.jsx";
-import Form from "./Form/Form.jsx";
-import "./Chat.css";
 
-const Chat = ({ socket }) => {
+import { Container, Row, Col } from "react-bootstrap";
+
+const Chat = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -17,14 +17,20 @@ const Chat = ({ socket }) => {
 
   return (
     token && (
-      <div className="container">
-        <Channels />
-        <div className="chat">
-          <h2>Чат</h2>
-          <Messages socket={socket} />
-          <Form />
-        </div>
-      </div>
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100 bg-white flex-md-row">
+          <Col
+            xs={4}
+            md={2}
+            className="border-end px-0 bg-light flex-column h-100 d-flex"
+          >
+            <Channels />
+          </Col>
+          <Col className="p-0 h-100">
+            <Messages />
+          </Col>
+        </Row>
+      </Container>
     )
   );
 };

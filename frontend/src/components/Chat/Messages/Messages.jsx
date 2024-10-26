@@ -2,25 +2,14 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setMessages,
-  addMessage,
-} from "../../../app/slices/chat/messagesSlice.js";
-import "./Messages.css";
+import { setMessages } from "../../../app/slices/chat/messagesSlice.js";
+import SendMessageForm from "./SendMessageForm/SendMessageForm.jsx";
 
-const Messages = ({ socket }) => {
+const Messages = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.messages.messages);
   const activeChannel = useSelector((state) => state.channels.activeChannel);
-
-  // socket.on("newMessage", (payload) => {
-  //   console.log("Hello from socket");
-  //   console.log("newMessage", payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
-  //   // dispatch(addMessage(payload));
-  //   // console.log("messages!!!! = ", messages);
-  // });
-
   useEffect(() => {
     async function fetchData() {
       if (!localStorage.getItem("token")) {
@@ -32,22 +21,35 @@ const Messages = ({ socket }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("dataMessages= ", resMessages.data); // =>[{ id: '1', body: 'text message', channelId: '1', username: 'admin }, ...]
         dispatch(setMessages(resMessages.data));
       }
     }
     fetchData();
   }, []);
-
   return (
-    <div className="messages">
-      {messages
-        .filter((message) => message.channelId === activeChannel)
-        .map((message) => (
-          <div key={message.id} className="message">
-            {message.body}
-          </div>
-        ))}
+    <div className="d-flex flex-column h-100">
+      <div className="bg-light mb-4 p-3 shadow-sm small">
+        <p className="m-0">
+          <b>{`# ${activeChannel.name}`} </b>
+        </p>
+        <span className="text-muted">
+          {`${
+            messages.filter((message) => message.channelId === activeChannel.id)
+              .length
+          } сообщений`}
+        </span>
+      </div>
+
+      <div id="messages-box" className="chat-messages overflow-auto px-5">
+        {messages
+          .filter((message) => message.channelId === activeChannel.id)
+          .map((message) => (
+            <div key={message.id} className="text-break mb-2">
+              {message.username}: {message.body}
+            </div>
+          ))}
+      </div>
+      <SendMessageForm />
     </div>
   );
 };

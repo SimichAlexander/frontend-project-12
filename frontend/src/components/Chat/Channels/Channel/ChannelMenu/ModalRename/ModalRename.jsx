@@ -1,40 +1,32 @@
 import axios from "axios";
+import { Modal } from "react-bootstrap";
 import { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import { useDispatch } from "react-redux";
-import { setActiveChannel } from "../../../../app/slices/chat/channelsSlice";
 
-const ModalAdd = ({ modal: { modalAdd, setModalAdd } }) => {
+const ModalRename = ({ channelId, modal: { modalRename, setModalRename } }) => {
   const [channelName, setChannelName] = useState("");
   const token = localStorage.getItem("token");
-  const dispatch = useDispatch();
   const handleClose = (e) => {
     e.preventDefault();
-    setModalAdd(!modalAdd);
-    setChannelName("");
+    setModalRename(!modalRename);
   };
 
-  const postChannel = async (e) => {
+  const renameChannel = async (e) => {
     e.preventDefault();
-    if (channelName) {
-      const res = await axios.post(
-        "/api/v1/channels",
-        { name: channelName },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setModalAdd(!modalAdd);
-      setChannelName("");
-      dispatch(setActiveChannel(res.data.id));
-    }
+    await axios.patch(
+      `/api/v1/channels/${channelId}`,
+      { name: channelName },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setModalRename(!modalRename);
   };
   return (
     <Modal show>
       <Modal.Header closeButton onClick={handleClose}>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>Переименовать канал</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -51,7 +43,7 @@ const ModalAdd = ({ modal: { modalAdd, setModalAdd } }) => {
               <button onClick={handleClose} type="button">
                 Отменить
               </button>
-              <button onClick={postChannel} type="submit">
+              <button onClick={renameChannel} type="submit">
                 Отправить
               </button>
             </div>
@@ -62,4 +54,4 @@ const ModalAdd = ({ modal: { modalAdd, setModalAdd } }) => {
   );
 };
 
-export default ModalAdd;
+export default ModalRename;
