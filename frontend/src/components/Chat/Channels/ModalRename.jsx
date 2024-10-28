@@ -1,54 +1,90 @@
 import axios from "axios";
+import * as Yup from "yup";
 import { Modal } from "react-bootstrap";
-import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-const ModalRename = ({ channelId, show, handleClose }) => {
-  const [channelName, setChannelName] = useState("");
-  const token = localStorage.getItem("token");
-  const handleClose = (e) => {
-    e.preventDefault();
-    setModalRename(!modalRename);
+const ModalRename = ({ show, channel, handleClose }) => {
+  const { t } = useTranslation();
+  const channels = useSelector((state) => state.channels.channels).map(
+    (channel) => channel.name
+  );
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .required(t("required_field"))
+      .min(3, t("character_limit"))
+      .max(20, t("character_limit")),
+  });
+
+  const renameChannel = async ({ name }, { setErrors }) => {
+    if (channels.includes(name)) {
+      setErrors({
+        name: t("must_be_unique"),
+      });
+    } else {
+      await axios.patch(
+        `/api/v1/channels/${channel.id}`,
+        { name },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      handleClose();
+    }
   };
 
-  const renameChannel = async (e) => {
-    e.preventDefault();
-    await axios.patch(
-      `/api/v1/channels/${channelId}`,
-      { name: channelName },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    setModalRename(!modalRename);
-  };
   return (
-    <Modal show>
-      <Modal.Header closeButton onClick={handleClose}>
-        <Modal.Title>Переименовать канал</Modal.Title>
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("rename_channel")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <form>
-          <div>
-            <input
-              name="name"
-              id="name"
-              onChange={(e) => setChannelName(e.target.value)}
-              value={channelName}
-            />
-            <label htmlFor="name">Имя канала</label>
-            <div>
-              <button onClick={handleClose} type="button">
-                Отменить
-              </button>
-              <button onClick={renameChannel} type="submit">
-                Отправить
-              </button>
-            </div>
-          </div>
-        </form>
+        <Formik
+          initialValues={{
+            name: channel.name || "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={renameChannel}
+        >
+          {({ errors, touched }) => (
+            <Form className="">
+              <div>
+                <Field
+                  name="name"
+                  id="name"
+                  className={`form-control mb-2 ${
+                    errors.name && touched.name ? "is-invalid" : ""
+                  }`}
+                />
+                <label className="visually-hidden" htmlFor="name">
+                  {t("channel_name")}
+                </label>
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="invalid-feedback"
+                />
+                <div className="d-flex justify-content-end">
+                  <button
+                    onClick={handleClose}
+                    type="button"
+                    className="me-2 btn btn-secondary"
+                  >
+                    {t("cancel")}
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    {t("send")}
+                  </button>
+                </div>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </Modal.Body>
     </Modal>
   );

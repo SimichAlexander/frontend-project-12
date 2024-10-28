@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveChannel } from "../../../app/slices/channelsSlice.js";
 import { Button, Dropdown } from "react-bootstrap";
 import ModalRemove from "./ModalRemove.jsx";
-// import ModalRename from "./ModalRename.jsx";
+import ModalRename from "./ModalRename.jsx";
+import { useTranslation } from "react-i18next";
 
 const Channel = ({ channel }) => {
+  const { t } = useTranslation();
   const [showModalRemove, setShowModalRemove] = useState(false);
-  // const [showModalRename, setShowModalRename] = useState(false);
+  const [showModalRename, setShowModalRename] = useState(false);
 
   const activeChannel = useSelector((state) => state.channels.activeChannel);
 
@@ -35,7 +37,7 @@ const Channel = ({ channel }) => {
             variant={channel.id === activeChannel.id ? "secondary" : ""}
             className="w-100 rounded-0 text-start text-truncate"
           >
-            <span className="me-1">#</span>
+            <span className="me-1">{t("title_hash")}</span>
             {channel.name}
           </Button>
 
@@ -45,18 +47,15 @@ const Channel = ({ channel }) => {
             id="dropdown-custom-components"
             className="flex-grow-0"
           >
-            <span className="visually-hidden">Управление каналом</span>
+            <span className="visually-hidden">{t("channel_management")}</span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => setShowModalRemove(true)} href="#">
-              Удалить
+              {t("delete")}
             </Dropdown.Item>
-            <Dropdown.Item
-              onClick={() => console.log("GOOD rename!!!")}
-              href="#"
-            >
-              Переименовать
+            <Dropdown.Item onClick={() => setShowModalRename(true)} href="#">
+              {t("rename")}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
@@ -67,7 +66,11 @@ const Channel = ({ channel }) => {
         channelId={channel.id}
         handleClose={() => setShowModalRemove(false)}
       />
-      {/* <ModalRename /> */}
+      <ModalRename
+        show={showModalRename}
+        channel={channel}
+        handleClose={() => setShowModalRename(false)}
+      />
     </>
   );
 };

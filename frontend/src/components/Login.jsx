@@ -1,10 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../app/services/authApi.js";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+  const { t } = useTranslation();
 
   const handleSubmit = async (values, { setErrors }) => {
     const { username, password } = values;
@@ -16,10 +18,11 @@ const Login = () => {
     } catch (error) {
       setErrors({
         username: "",
-        password: "Неверные имя пользователя или пароль",
+        password: t("invalid_credentials"),
       });
     }
   };
+
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
@@ -27,7 +30,11 @@ const Login = () => {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src="login.jpg" className="rounded-circle" alt="Войти" />
+                <img
+                  src="login.jpg"
+                  className="rounded-circle"
+                  alt={t("login")}
+                />
               </div>
               <Formik
                 initialValues={{
@@ -38,20 +45,20 @@ const Login = () => {
               >
                 {({ errors }) => (
                   <Form className="col-12 col-md-6 mt-3 mt-md-0">
-                    <h1 className="text-center mb-4">Войти</h1>
+                    <h1 className="text-center mb-4">{t("login")}</h1>
                     <div className="form-floating mb-3">
                       <Field
                         name="username"
                         autoComplete="username"
                         required
-                        placeholder="Ваш ник"
+                        placeholder={t("your_nickname")}
                         id="username"
                         className={`form-control ${
                           errors.password && "is-invalid"
                         }`}
                       />
                       <label className="form-label" htmlFor="username">
-                        Ваш ник
+                        {t("your_nickname")}
                       </label>
                     </div>
 
@@ -60,7 +67,7 @@ const Login = () => {
                         name="password"
                         autoComplete="current-password"
                         required
-                        placeholder="Пароль"
+                        placeholder={t("password")}
                         type="password"
                         id="password"
                         className={`form-control ${
@@ -68,7 +75,7 @@ const Login = () => {
                         }`}
                       />
                       <label className="form-label" htmlFor="password">
-                        Пароль
+                        {t("password")}
                       </label>
                       <ErrorMessage
                         name="password"
@@ -81,7 +88,7 @@ const Login = () => {
                       type="submit"
                       className="w-100 mb-3 btn btn-outline-primary"
                     >
-                      Войти
+                      {t("login")}
                     </button>
                   </Form>
                 )}
@@ -89,8 +96,8 @@ const Login = () => {
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>Нет аккаунта? </span>
-                <Link to="/signup">Регистрация</Link>
+                <span>{t("no_account")}</span>
+                <Link to="/signup">{t("registration")}</Link>
               </div>
             </div>
           </div>

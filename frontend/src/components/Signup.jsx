@@ -2,24 +2,26 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../app/services/authApi.js";
-
-const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, "От 3 до 20 символов")
-    .max(20, "От 3 до 20 символов")
-    .required("Обязательное поле"),
-  password: Yup.string()
-    .min(6, "Не менее 6 символов")
-    .required("Обязательное поле"),
-  confirmPassword: Yup.string().oneOf(
-    [Yup.ref("password")],
-    "Пароли должны совпадать"
-  ),
-});
+import { useTranslation } from "react-i18next";
 
 const Signup = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [signup] = useSignupMutation();
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, t("character_limit"))
+      .max(20, t("character_limit"))
+      .required(t("required_field")),
+    password: Yup.string()
+      .min(6, t("min_length_6"))
+      .required(t("required_field")),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref("password")],
+      t("passwords_must_match")
+    ),
+  });
 
   const handleSubmit = async (values, { setErrors }) => {
     const { username, password } = values;
@@ -32,7 +34,7 @@ const Signup = () => {
       setErrors({
         username: true,
         password: true,
-        confirmPassword: "Такой пользователь уже существует",
+        confirmPassword: t("user_exists"),
       });
     }
   };
@@ -47,7 +49,7 @@ const Signup = () => {
                 <img
                   src="signup.jpg"
                   className="rounded-circle"
-                  alt="Регистрация"
+                  alt={t("registration")}
                 />
               </div>
               <Formik
@@ -61,20 +63,20 @@ const Signup = () => {
               >
                 {({ errors, touched }) => (
                   <Form className="w-50">
-                    <h1 className="text-center mb-4">Регистрация</h1>
+                    <h1 className="text-center mb-4">{t("registration")}</h1>
                     <div className="form-floating mb-3">
                       <Field
                         name="username"
                         autoComplete="username"
                         required
-                        placeholder="От 3 до 20 символов"
+                        placeholder={t("character_limit")}
                         id="username"
                         className={`form-control ${
                           errors.username && touched.username && "is-invalid"
                         }`}
                       />
                       <label className="form-label" htmlFor="username">
-                        Имя пользователя
+                        {t("user_name")}
                       </label>
                       <ErrorMessage
                         name="username"
@@ -88,7 +90,7 @@ const Signup = () => {
                         name="password"
                         autoComplete="new-password"
                         required
-                        placeholder="Не менее 6 символов"
+                        placeholder={t("min_length_6")}
                         type="password"
                         id="password"
                         aria-describedby="passwordHelpBlock"
@@ -98,7 +100,7 @@ const Signup = () => {
                         }`}
                       />
                       <label className="form-label" htmlFor="password">
-                        Пароль
+                        {t("password")}
                       </label>
                       <ErrorMessage
                         name="password"
@@ -111,7 +113,7 @@ const Signup = () => {
                         name="confirmPassword"
                         autoComplete="new-password"
                         required
-                        placeholder="Пароли должны совпадать"
+                        placeholder={t("passwords_must_match")}
                         type="password"
                         id="confirmPassword"
                         className={`form-control ${
@@ -121,7 +123,7 @@ const Signup = () => {
                         }`}
                       />
                       <label className="form-label" htmlFor="confirmPassword">
-                        Подтвердите пароль
+                        {t("confirm_password")}
                       </label>
                       <ErrorMessage
                         name="confirmPassword"
@@ -133,7 +135,7 @@ const Signup = () => {
                       type="submit"
                       className="w-100 btn btn-outline-primary"
                     >
-                      Зарегистрироваться
+                      {t("sign_up")}
                     </button>
                   </Form>
                 )}

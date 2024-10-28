@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setMessages } from "../../../app/slices/messagesSlice.js";
 import SendMessageForm from "./SendMessageForm.jsx";
+import { useTranslation } from "react-i18next";
 
 const Messages = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.messages.messages);
@@ -36,7 +38,7 @@ const Messages = () => {
           {`${
             messages.filter((message) => message.channelId === activeChannel.id)
               .length
-          } сообщений`}
+          } ${t("messages")}`}
         </span>
       </div>
 
@@ -45,7 +47,7 @@ const Messages = () => {
           .filter((message) => message.channelId === activeChannel.id)
           .map((message) => (
             <div key={message.id} className="text-break mb-2">
-              {message.username}: {message.body}
+              <b>{message.username}</b>: {message.body}
             </div>
           ))}
       </div>

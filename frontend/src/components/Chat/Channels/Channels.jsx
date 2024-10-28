@@ -5,8 +5,10 @@ import axios from "axios";
 import { setChannels } from "../../../app/slices/channelsSlice.js";
 import Channel from "./Channel.jsx";
 import ModalAdd from "./ModalAdd.jsx";
+import { useTranslation } from "react-i18next";
 
 const Channels = () => {
+  const { t } = useTranslation();
   const [showModalAdd, setShowModalAdd] = useState(false);
 
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ const Channels = () => {
   return (
     <>
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>Каналы</b>
+        <b>{t("channels")}</b>
         <Button
           onClick={() => setShowModalAdd(!showModalAdd)}
           variant=""
