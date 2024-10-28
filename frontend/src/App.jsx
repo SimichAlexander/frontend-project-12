@@ -1,19 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 import { io } from "socket.io-client";
 
-import Layout from "./components/Layout/Layout.jsx";
+import Layout from "./components/Layout.jsx";
 import Chat from "./components/Chat/Chat.jsx";
-import Login from "./components/Login/Login.jsx";
-import Signup from "./components/Signup/Signup.jsx";
-import NotFoundPage from "./components/NotFoundPage/NotFoundPage.jsx";
+import Login from "./components/Login.jsx";
+import Signup from "./components/Signup.jsx";
+import NotFoundPage from "./components/NotFoundPage.jsx";
 
 import { useDispatch } from "react-redux";
-import { addMessage } from "./app/slices/chat/messagesSlice.js";
+import { addMessage } from "./app/slices/messagesSlice.js";
 import {
   addChannel,
   removeChannel,
   renameChannel,
-} from "./app/slices/chat/channelsSlice.js";
+} from "./app/slices/channelsSlice.js";
 
 const App = () => {
   const socket = io();

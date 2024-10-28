@@ -1,6 +1,5 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
 import { Navbar, Container, Button } from "react-bootstrap";
 
 const Layout = () => {

@@ -1,28 +1,23 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setChannels } from "../../../app/slices/chat/channelsSlice.js";
-import Channel from "./Channel/Channel.jsx";
-import ModalAdd from "./ModalAdd/ModalAdd.jsx";
-
-import { useTranslation } from "react-i18next";
-
-import { Button, ListGroup, Nav, Dropdown } from "react-bootstrap";
+import { Button, Nav } from "react-bootstrap";
+import axios from "axios";
+import { setChannels } from "../../../app/slices/channelsSlice.js";
+import Channel from "./Channel.jsx";
+import ModalAdd from "./ModalAdd.jsx";
 
 const Channels = () => {
-  const { t } = useTranslation();
-  const [modalAdd, setModalAdd] = useState(false);
+  const [showModalAdd, setShowModalAdd] = useState(false);
+
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channels.channels);
-  const token = localStorage.getItem("token");
 
   const getChannels = async () => {
     const resChannels = await axios.get("/api/v1/channels", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    console.log("dataChannels= ", resChannels.data); // =>[{ id: '1', name: 'general', removable: false }, ...]
     dispatch(setChannels(resChannels.data));
   };
 
@@ -33,9 +28,9 @@ const Channels = () => {
   return (
     <>
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>{t("channels")}</b>
+        <b>Каналы</b>
         <Button
-          onClick={() => setModalAdd(!modalAdd)}
+          onClick={() => setShowModalAdd(!showModalAdd)}
           variant=""
           className="p-0 text-primary btn-group-vertical"
         >
@@ -51,7 +46,12 @@ const Channels = () => {
           </svg>
           <span className="visually-hidden">+</span>
         </Button>
-        {modalAdd && <ModalAdd modal={{ modalAdd, setModalAdd }} />}
+        {showModalAdd && (
+          <ModalAdd
+            show={showModalAdd}
+            handleClose={() => setShowModalAdd(false)}
+          />
+        )}
       </div>
 
       <Nav
@@ -59,23 +59,11 @@ const Channels = () => {
         className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
       >
         {channels.map((channel) => (
-          <Channel key={channel.id} channel={channel} />
+          <Nav.Item key={channel.id} className="w-100">
+            <Channel channel={channel} />
+          </Nav.Item>
         ))}
       </Nav>
-
-      {/* <ListGroup
-        id="channels-box"
-        className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
-      >
-        {channels.map((channel) => (
-          <ListGroup.Item
-            key={channel.id}
-            className="w-100 rounded-0 text-start"
-          >
-            <Channel channel={channel} />
-          </ListGroup.Item>
-        ))}
-      </ListGroup> */}
     </>
   );
 };

@@ -1,38 +1,23 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import axios from "axios";
-import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../app/slices/auth/authSlice.js";
-import { useLoginMutation } from "../../app/services/authApi.js";
-import { useEffect, useState } from "react";
-
-import { useTranslation } from "react-i18next";
-
-const validationSchema = Yup.object().shape({
-  username: Yup.string().min(3, "Too Short!").required("Required"),
-  password: Yup.string().required("Required"),
-});
+import { useLoginMutation } from "../app/services/authApi.js";
 
 const Login = () => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values, { setErrors }) => {
+    const { username, password } = values;
     try {
       const response = await login({ username, password });
-      dispatch(setCredentials(response.data));
       localStorage.setItem("username", response.data.username);
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error) {
-      console.log("general", "Неверные имя пользователя или пароль");
+      setErrors({
+        username: "",
+        password: "Неверные имя пользователя или пароль",
+      });
     }
   };
   return (
@@ -49,10 +34,9 @@ const Login = () => {
                   username: "",
                   password: "",
                 }}
-                validationSchema={validationSchema}
                 onSubmit={handleSubmit}
               >
-                {() => (
+                {({ errors }) => (
                   <Form className="col-12 col-md-6 mt-3 mt-md-0">
                     <h1 className="text-center mb-4">Войти</h1>
                     <div className="form-floating mb-3">
@@ -62,14 +46,13 @@ const Login = () => {
                         required
                         placeholder="Ваш ник"
                         id="username"
-                        className="form-control"
+                        className={`form-control ${
+                          errors.password && "is-invalid"
+                        }`}
                       />
-                      <label htmlFor="username">Ваш ник</label>
-                      <ErrorMessage
-                        name="username"
-                        component="div"
-                        className="text-danger"
-                      />
+                      <label className="form-label" htmlFor="username">
+                        Ваш ник
+                      </label>
                     </div>
 
                     <div className="form-floating mb-4">
@@ -80,7 +63,9 @@ const Login = () => {
                         placeholder="Пароль"
                         type="password"
                         id="password"
-                        className="form-control"
+                        className={`form-control ${
+                          errors.password && "is-invalid"
+                        }`}
                       />
                       <label className="form-label" htmlFor="password">
                         Пароль
@@ -88,7 +73,7 @@ const Login = () => {
                       <ErrorMessage
                         name="password"
                         component="div"
-                        className="text-danger"
+                        className="invalid-tooltip"
                       />
                     </div>
 
@@ -105,7 +90,6 @@ const Login = () => {
             <div className="card-footer p-4">
               <div className="text-center">
                 <span>Нет аккаунта? </span>
-                {/* <a href="/signup">Регистрация</a> */}
                 <Link to="/signup">Регистрация</Link>
               </div>
             </div>
@@ -114,53 +98,6 @@ const Login = () => {
       </div>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <div>
-  //       <div>
-  //         <img src="login.jpg" alt="Войти" />
-  //       </div>
-  //       <form onSubmit={handleSubmit}>
-  //         <h1>{t("login")}</h1>
-  //         <div>
-  //           <input
-  //             name="username"
-  //             autoComplete="username"
-  //             required=""
-  //             placeholder={t("username")}
-  //             id="username"
-  //             onChange={(e) => setUsername(e.target.value)}
-  //             value={username}
-  //           />
-  //           <label htmlFor="username">{t("username")}</label>
-  //         </div>
-  //         <div>
-  //           <input
-  //             name="password"
-  //             autoComplete="current-password"
-  //             required=""
-  //             placeholder={t("password")}
-  //             type="password"
-  //             id="password"
-  //             onChange={(e) => setPassword(e.target.value)}
-  //             value={password}
-  //           />
-  //           <label htmlFor="password">{t("password")}</label>
-  //         </div>
-  //         <button type="submit">{t("login")}</button>
-  //       </form>
-  //     </div>
-  //     <div>
-  //       <div>
-  //         <span>{t("noAccount")}</span>{" "}
-  //         <button onClick={() => navigate("/signup")}>
-  //           {t("registration")}
-  //         </button>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default Login;

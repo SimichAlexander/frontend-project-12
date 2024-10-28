@@ -3,13 +3,15 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
+    // prepareHeaders: (headers, { getState }) => {
+    //   // const token = getState().auth.token;
+    //   const token = localStorage.getItem("token");
+    //   console.log("token from authApi", token);
+    //   if (token) {
+    //     headers.set("authorization", `Bearer ${token}`);
+    //   }
+    //   return headers;
+    // },
   }),
   endpoints: (builder) => ({
     login: builder.mutation({

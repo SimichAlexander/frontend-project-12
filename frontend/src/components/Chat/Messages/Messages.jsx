@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setMessages } from "../../../app/slices/chat/messagesSlice.js";
-import SendMessageForm from "./SendMessageForm/SendMessageForm.jsx";
+import { setMessages } from "../../../app/slices/messagesSlice.js";
+import SendMessageForm from "./SendMessageForm.jsx";
 
 const Messages = () => {
   const navigate = useNavigate();

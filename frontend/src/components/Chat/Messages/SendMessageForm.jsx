@@ -1,17 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
-import { useTranslation } from "react-i18next";
-
 import { Button, Form } from "react-bootstrap";
 
 const SendMessageForm = () => {
-  const { t } = useTranslation();
   const [currentMessage, setCurrentMessage] = useState("");
   const activeChannel = useSelector((state) => state.channels.activeChannel);
-  const activeUsername = useSelector((state) => state.auth.username);
-  const token = useSelector((state) => state.auth.token);
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (currentMessage) {
@@ -20,11 +14,11 @@ const SendMessageForm = () => {
         {
           body: currentMessage,
           channelId: activeChannel,
-          username: activeUsername,
+          username: localStorage.getItem("username"),
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -36,7 +30,7 @@ const SendMessageForm = () => {
       <Form
         onSubmit={handleSendMessage}
         className="py-1 border rounded-2"
-        novalidate=""
+        noValidate=""
       >
         <Form.Group className="input-group has-validation">
           <Form.Control
@@ -61,7 +55,7 @@ const SendMessageForm = () => {
               fill="currentColor"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"
               ></path>
             </svg>

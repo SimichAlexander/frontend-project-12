@@ -1,33 +1,39 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../app/slices/auth/authSlice.js";
-import { useSignupMutation } from "../../app/services/authApi.js";
-
-// import { useTranslation } from "react-i18next";
+import { useSignupMutation } from "../app/services/authApi.js";
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().min(3, "Too Short!").required("Обязательное поле"),
-  password: Yup.string().required("Обязательное поле"),
+  username: Yup.string()
+    .min(3, "От 3 до 20 символов")
+    .max(20, "От 3 до 20 символов")
+    .required("Обязательное поле"),
+  password: Yup.string()
+    .min(6, "Не менее 6 символов")
+    .required("Обязательное поле"),
+  confirmPassword: Yup.string().oneOf(
+    [Yup.ref("password")],
+    "Пароли должны совпадать"
+  ),
 });
 
 const Signup = () => {
-  // const { t } = useTranslation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [signup] = useSignupMutation();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values, { setErrors }) => {
+    const { username, password } = values;
     try {
       const response = await signup({ username, password });
-      dispatch(setCredentials(response.data));
       localStorage.setItem("username", response.data.username);
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error) {
-      console.log("Ошибка регистрации");
+      setErrors({
+        username: true,
+        password: true,
+        confirmPassword: "Такой пользователь уже существует",
+      });
     }
   };
 
@@ -53,60 +59,75 @@ const Signup = () => {
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
               >
-                {() => (
+                {({ errors, touched }) => (
                   <Form className="w-50">
                     <h1 className="text-center mb-4">Регистрация</h1>
                     <div className="form-floating mb-3">
                       <Field
                         name="username"
-                        autocomplete="username"
-                        placeholder="От 3 до 20 символов"
-                        className="form-control"
-                        id="username"
+                        autoComplete="username"
                         required
+                        placeholder="От 3 до 20 символов"
+                        id="username"
+                        className={`form-control ${
+                          errors.username && touched.username && "is-invalid"
+                        }`}
                       />
                       <label className="form-label" htmlFor="username">
                         Имя пользователя
                       </label>
-                      <div className="invalid-tooltip" placement="right">
-                        <ErrorMessage name="username" />
-                      </div>
+                      <ErrorMessage
+                        name="username"
+                        component="div"
+                        className="invalid-tooltip"
+                      />
                     </div>
+
                     <div className="form-floating mb-3">
                       <Field
                         name="password"
+                        autoComplete="new-password"
+                        required
                         placeholder="Не менее 6 символов"
                         type="password"
-                        className="form-control"
                         id="password"
                         aria-describedby="passwordHelpBlock"
-                        required
-                        autocomplete="new-password"
                         aria-autocomplete="list"
+                        className={`form-control ${
+                          errors.password && touched.password && "is-invalid"
+                        }`}
                       />
-                      <div className="invalid-tooltip">
-                        <ErrorMessage name="password" />
-                      </div>
                       <label className="form-label" htmlFor="password">
                         Пароль
                       </label>
+                      <ErrorMessage
+                        name="password"
+                        component="div"
+                        className="invalid-tooltip"
+                      />
                     </div>
                     <div className="form-floating mb-4">
                       <Field
                         name="confirmPassword"
+                        autoComplete="new-password"
+                        required
                         placeholder="Пароли должны совпадать"
                         type="password"
-                        className="form-control"
                         id="confirmPassword"
-                        required
-                        autocomplete="new-password"
+                        className={`form-control ${
+                          errors.confirmPassword &&
+                          touched.confirmPassword &&
+                          "is-invalid"
+                        }`}
                       />
-                      <div className="invalid-tooltip">
-                        <ErrorMessage name="confirmPassword" />
-                      </div>
                       <label className="form-label" htmlFor="confirmPassword">
                         Подтвердите пароль
                       </label>
+                      <ErrorMessage
+                        name="confirmPassword"
+                        component="div"
+                        className="invalid-tooltip"
+                      />
                     </div>
                     <button
                       type="submit"
@@ -123,57 +144,6 @@ const Signup = () => {
       </div>
     </div>
   );
-  // return (
-  //   <div>
-  //     <div>
-  //       <div>
-  //         <img src="signup.jpg" alt={t("registration")} />
-  //       </div>
-  //       <form onSubmit={handleSubmit}>
-  //         <h1>{t("registration")}</h1>
-  //         <div>
-  //           <input
-  //             name="username"
-  //             autoComplete="username"
-  //             required=""
-  //             placeholder={t("username")}
-  //             id="username"
-  //             onChange={(e) => setUsername(e.target.value)}
-  //             value={username}
-  //           />
-  //           <label htmlFor="username">{t("username")}</label>
-  //         </div>
-  //         <div>
-  //           <input
-  //             name="password"
-  //             autoComplete="new-password"
-  //             required=""
-  //             placeholder={t("password")}
-  //             type="password"
-  //             id="password"
-  //             onChange={(e) => setPassword(e.target.value)}
-  //             value={password}
-  //           />
-  //           <label htmlFor="password">{t("password")}</label>
-  //         </div>
-  //         <div>
-  //           <input
-  //             name="confirmPassword"
-  //             autoComplete="new-password"
-  //             required=""
-  //             placeholder={t("confirmPassword")}
-  //             type="password"
-  //             id="confirmPassword"
-  //             onChange={(e) => setConfirmPassword(e.target.value)}
-  //             value={confirmPassword}
-  //           />
-  //           <label htmlFor="confirmPassword">{t("confirmPassword")}</label>
-  //         </div>
-  //         <button type="submit">{t("register")}</button>
-  //       </form>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default Signup;
