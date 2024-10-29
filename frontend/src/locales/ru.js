@@ -28,7 +28,11 @@ export default {
     app_title: "Hexlet Chat",
 
     // Messages
-    messages: "сообщений",
+    messages: {
+      count_one: "{{count}} сообщение",
+      count_few: "{{count}} сообщения",
+      count_many: "{{count}} сообщений",
+    },
 
     // SendMessageForm
     new_message: "Новое сообщение",

@@ -10,8 +10,11 @@ const Messages = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const messages = useSelector((state) => state.messages.messages);
   const activeChannel = useSelector((state) => state.channels.activeChannel);
+  const messages = useSelector((state) => state.messages.messages);
+  const messagesCount = messages.filter(
+    (message) => message.channelId === activeChannel.id
+  ).length;
   useEffect(() => {
     async function fetchData() {
       if (!localStorage.getItem("token")) {
@@ -35,10 +38,9 @@ const Messages = () => {
           <b>{`# ${activeChannel.name}`} </b>
         </p>
         <span className="text-muted">
-          {`${
-            messages.filter((message) => message.channelId === activeChannel.id)
-              .length
-          } ${t("messages")}`}
+          {`${t("messages.count", {
+            count: messagesCount,
+          })}`}
         </span>
       </div>
 
