@@ -17,7 +17,6 @@ const slice = createSlice({
       return { ...state, channels: state.channels.filter((channel) => channel.id !== id) };
     },
     renameChannel: (state, { payload: { id, name } }) => {
-      state.channels.find((channel) => channel.id === id).name = name;
       return {
         ...state,
         channels: state.channels.map((channel) => (channel.id === id ? { ...channel, name } : channel)),
