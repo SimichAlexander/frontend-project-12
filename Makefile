@@ -1,5 +1,5 @@
 lint-frontend:
-make -C frontend lint
+	make -C frontend lint
 
 install:
 	npm ci
