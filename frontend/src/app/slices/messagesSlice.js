@@ -12,16 +12,12 @@ const slice = createSlice({
       state.messages.push(payload);
     },
     removeMessage: (state, { payload }) => {
-      state.messages = state.messages.filter(
-        (message) => message.id !== payload
-      );
+      state.messages = state.messages.filter((message) => message.id !== payload);
     },
   },
   extraReducers: (builder) => {
     builder.addCase(removeChannel, (state, { payload: { id } }) => {
-      state.messages = state.messages.filter(
-        (message) => message.channelId !== id
-      );
+      state.messages = state.messages.filter((message) => message.channelId !== id);
     });
   },
 });

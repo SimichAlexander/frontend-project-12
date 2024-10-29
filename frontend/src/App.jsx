@@ -10,11 +10,7 @@ import Signup from './components/Signup.jsx';
 import NotFoundPage from './components/NotFoundPage.jsx';
 
 import { addMessage } from './app/slices/messagesSlice.js';
-import {
-  addChannel,
-  removeChannel,
-  renameChannel,
-} from './app/slices/channelsSlice.js';
+import { addChannel, removeChannel, renameChannel } from './app/slices/channelsSlice.js';
 
 const App = () => {
   filter.add(filter.getDictionary('en'));
@@ -40,11 +36,11 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path='/' element={<Layout />}>
+      <Route path="/" element={<Layout />}>
         <Route index element={<Chat />} />
-        <Route path='login' element={<Login />} />
-        <Route path='signup' element={<Signup />} />
-        <Route path='*' element={<NotFoundPage />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

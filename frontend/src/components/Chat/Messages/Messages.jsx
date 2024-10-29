@@ -1,10 +1,10 @@
-import axios from "axios";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { setMessages } from "../../../app/slices/messagesSlice.js";
-import SendMessageForm from "./SendMessageForm.jsx";
-import { useTranslation } from "react-i18next";
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessages } from '../../../app/slices/messagesSlice.js';
+import SendMessageForm from './SendMessageForm.jsx';
+import { useTranslation } from 'react-i18next';
 
 const Messages = () => {
   const { t } = useTranslation();
@@ -12,16 +12,14 @@ const Messages = () => {
   const dispatch = useDispatch();
   const activeChannel = useSelector((state) => state.channels.activeChannel);
   const messages = useSelector((state) => state.messages.messages);
-  const messagesCount = messages.filter(
-    (message) => message.channelId === activeChannel.id
-  ).length;
+  const messagesCount = messages.filter((message) => message.channelId === activeChannel.id).length;
   useEffect(() => {
     async function fetchData() {
-      if (!localStorage.getItem("token")) {
-        navigate("/login");
+      if (!localStorage.getItem('token')) {
+        navigate('/login');
       } else {
-        const token = localStorage.getItem("token");
-        const resMessages = await axios.get("/api/v1/messages", {
+        const token = localStorage.getItem('token');
+        const resMessages = await axios.get('/api/v1/messages', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -38,7 +36,7 @@ const Messages = () => {
           <b>{`# ${activeChannel.name}`} </b>
         </p>
         <span className="text-muted">
-          {`${t("messages.count", {
+          {`${t('messages.count', {
             count: messagesCount,
           })}`}
         </span>
