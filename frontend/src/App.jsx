@@ -15,7 +15,9 @@ import {
   renameChannel,
 } from "./app/slices/channelsSlice.js";
 
+import filter from "leo-profanity";
 const App = () => {
+  filter.loadDictionary("ru");
   const socket = io();
   const dispatch = useDispatch();
   socket.on("newMessage", (payload) => {

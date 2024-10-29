@@ -2,16 +2,18 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import { useTranslation } from "react-i18next";
+import filter from "leo-profanity";
 
 const SendMessageForm = () => {
   const { t } = useTranslation();
   const activeChannel = useSelector((state) => state.channels.activeChannel);
 
   const handleSendMessage = async ({ body }, { setFieldValue }) => {
+    const filteredBody = filter.clean(body);
     await axios.post(
       "/api/v1/messages",
       {
-        body,
+        body: filteredBody,
         channelId: activeChannel.id,
         username: localStorage.getItem("username"),
       },

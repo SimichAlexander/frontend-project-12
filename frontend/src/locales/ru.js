@@ -36,25 +36,29 @@ export default {
     send: "Отправить",
 
     // Channel
-    channel_management: "",
+    channel_management: "Управление каналом",
     delete: "Удалить",
     rename: "Переименовать",
     title_hash: "#",
 
     // Channels
     channels: "Каналы",
+    plus: "+",
 
     // ModalAdd
     must_be_unique: "Должно быть уникальным",
     add_channel: "Добавить канал",
     channel_name: "Имя канала",
     cancel: "Отменить",
+    channel_created: "Канал создан",
 
     // ModalRemove
     delete_channel: "Удалить канал",
     are_you_sure: "Уверены?",
+    channel_deleted: "Канал удалён",
 
     // ModalRemove
     rename_channel: "Переименовать канал",
+    channel_renamed: "Канал переименован",
   },
 };

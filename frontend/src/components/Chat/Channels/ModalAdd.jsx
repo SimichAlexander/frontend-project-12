@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setActiveChannel } from "../../../app/slices/channelsSlice";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import filter from "leo-profanity";
 
 const ModalAdd = ({ show, handleClose }) => {
   const { t } = useTranslation();
@@ -22,14 +23,19 @@ const ModalAdd = ({ show, handleClose }) => {
   });
 
   const postChannel = async ({ name }, { setErrors }) => {
-    if (channels.includes(name)) {
+    const filteredName = filter.clean(name);
+
+    if (channels.includes(filteredName)) {
+      if (name !== filteredName) {
+        return;
+      }
       setErrors({
         name: t("must_be_unique"),
       });
     } else {
       const res = await axios.post(
         "/api/v1/channels",
-        { name },
+        { name: filteredName },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -38,9 +44,10 @@ const ModalAdd = ({ show, handleClose }) => {
       );
       dispatch(setActiveChannel(res.data));
       handleClose();
-      toast.success("Канал создан"),
+      toast.success(t("channel_created")),
         {
           closeOnClick: true,
+          draggable: true,
         };
     }
   };

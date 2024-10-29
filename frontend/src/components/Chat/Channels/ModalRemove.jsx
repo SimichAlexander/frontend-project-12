@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setActiveChannel } from "../../../app/slices/channelsSlice";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 const ModalRemove = ({ show, channelId, handleClose }) => {
   const { t } = useTranslation();
@@ -17,6 +18,11 @@ const ModalRemove = ({ show, channelId, handleClose }) => {
     });
     handleClose();
     dispatch(setActiveChannel({ id: "1", name: "general", removable: false }));
+    toast.success(t("channel_deleted")),
+      {
+        closeOnClick: true,
+        draggable: true,
+      };
   };
   return (
     <Modal show={show} onHide={handleClose} centered>

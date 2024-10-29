@@ -4,6 +4,8 @@ import { Modal } from "react-bootstrap";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import filter from "leo-profanity";
 
 const ModalRename = ({ show, channel, handleClose }) => {
   const { t } = useTranslation();
@@ -19,14 +21,18 @@ const ModalRename = ({ show, channel, handleClose }) => {
   });
 
   const renameChannel = async ({ name }, { setErrors }) => {
-    if (channels.includes(name)) {
+    const filteredName = filter.clean(name);
+    if (channels.includes(filteredName)) {
+      if (name !== filteredName) {
+        return;
+      }
       setErrors({
         name: t("must_be_unique"),
       });
     } else {
       await axios.patch(
         `/api/v1/channels/${channel.id}`,
-        { name },
+        { name: filteredName },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -34,6 +40,11 @@ const ModalRename = ({ show, channel, handleClose }) => {
         }
       );
       handleClose();
+      toast.success(t("channel_renamed")),
+        {
+          closeOnClick: true,
+          draggable: true,
+        };
     }
   };
 
