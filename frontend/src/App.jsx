@@ -17,7 +17,9 @@ import {
 
 import filter from "leo-profanity";
 const App = () => {
-  filter.loadDictionary("ru");
+  filter.add(filter.getDictionary("en"));
+  filter.add(filter.getDictionary("ru"));
+
   const socket = io();
   const dispatch = useDispatch();
   socket.on("newMessage", (payload) => {
