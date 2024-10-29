@@ -18,11 +18,7 @@ const ModalRemove = ({ show, channelId, handleClose }) => {
     });
     handleClose();
     dispatch(setActiveChannel({ id: '1', name: 'general', removable: false }));
-    toast.success(t('channel_deleted')),
-      {
-        closeOnClick: true,
-        draggable: true,
-      };
+    toast.success(t('channel_deleted'));
   };
   return (
     <Modal show={show} onHide={handleClose} centered>

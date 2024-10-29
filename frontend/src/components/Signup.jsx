@@ -1,8 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { useSignupMutation } from '../app/services/authApi.js';
 import { useTranslation } from 'react-i18next';
+import { useSignupMutation } from '../app/services/authApi.js';
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -10,7 +10,10 @@ const Signup = () => {
   const [signup] = useSignupMutation();
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().min(3, t('character_limit')).max(20, t('character_limit')).required(t('required_field')),
+    username: Yup.string()
+      .min(3, t('character_limit'))
+      .max(20, t('character_limit'))
+      .required(t('required_field')),
     password: Yup.string().min(6, t('min_length_6')).required(t('required_field')),
     confirmPassword: Yup.string().oneOf([Yup.ref('password')], t('passwords_must_match')),
   });
@@ -92,7 +95,9 @@ const Signup = () => {
                         placeholder={t('passwords_must_match')}
                         type="password"
                         id="confirmPassword"
-                        className={`form-control ${errors.confirmPassword && touched.confirmPassword && 'is-invalid'}`}
+                        className={`form-control ${
+                          errors.confirmPassword && touched.confirmPassword && 'is-invalid'
+                        }`}
                       />
                       <label className="form-label" htmlFor="confirmPassword">
                         {t('confirm_password')}

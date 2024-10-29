@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import Channels from './Channels/Channels.jsx';
 import Messages from './Messages/Messages.jsx';
-
-import { Container, Row, Col } from 'react-bootstrap';
 
 const Chat = () => {
   const navigate = useNavigate();

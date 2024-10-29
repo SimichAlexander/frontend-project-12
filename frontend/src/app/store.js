@@ -3,7 +3,7 @@ import { authApi } from './services/authApi.js';
 import channelsReducer from './slices/channelsSlice.js';
 import messagesReducer from './slices/messagesSlice.js';
 
-export const store = configureStore({
+export default configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     channels: channelsReducer,

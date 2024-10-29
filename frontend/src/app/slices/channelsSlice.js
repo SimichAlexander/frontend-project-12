@@ -4,24 +4,17 @@ const slice = createSlice({
   name: 'channels',
   initialState: { channels: [], activeChannel: { id: '1', name: 'general' } },
   reducers: {
-    setChannels: (state, { payload }) => {
-      return { ...state, channels: payload };
-    },
-    setActiveChannel: (state, { payload }) => {
-      return { ...state, activeChannel: payload };
-    },
-    addChannel: (state, { payload }) => {
-      return { ...state, channels: [...state.channels, payload] };
-    },
-    removeChannel: (state, { payload: { id } }) => {
-      return { ...state, channels: state.channels.filter((channel) => channel.id !== id) };
-    },
-    renameChannel: (state, { payload: { id, name } }) => {
-      return {
-        ...state,
-        channels: state.channels.map((channel) => (channel.id === id ? { ...channel, name } : channel)),
-      };
-    },
+    setChannels: (state, { payload }) => ({ ...state, channels: payload }),
+    setActiveChannel: (state, { payload }) => ({ ...state, activeChannel: payload }),
+    addChannel: (state, { payload }) => ({ ...state, channels: [...state.channels, payload] }),
+    removeChannel: (state, { payload: { id } }) => ({
+      ...state,
+      channels: state.channels.filter((channel) => channel.id !== id),
+    }),
+    renameChannel: (state, { payload: { id, name } }) => ({
+      ...state,
+      channels: state.channels.map((channel) => (channel.id === id ? { ...channel, name } : channel)),
+    }),
   },
 });
 

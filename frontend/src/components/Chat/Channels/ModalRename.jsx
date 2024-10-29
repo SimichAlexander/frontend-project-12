@@ -9,10 +9,13 @@ import filter from 'leo-profanity';
 
 const ModalRename = ({ show, channel, handleClose }) => {
   const { t } = useTranslation();
-  const channels = useSelector((state) => state.channels.channels).map((channel) => channel.name);
+  const channels = useSelector((state) => state.channels.channels).map((item) => item.name);
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required(t('required_field')).min(3, t('character_limit')).max(20, t('character_limit')),
+    name: Yup.string()
+      .required(t('required_field'))
+      .min(3, t('character_limit'))
+      .max(20, t('character_limit')),
   });
 
   const renameChannel = async ({ name }, { setErrors }) => {
@@ -32,14 +35,10 @@ const ModalRename = ({ show, channel, handleClose }) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        }
+        },
       );
       handleClose();
-      toast.success(t('channel_renamed')),
-        {
-          closeOnClick: true,
-          draggable: true,
-        };
+      toast.success(t('channel_renamed'));
     }
   };
 

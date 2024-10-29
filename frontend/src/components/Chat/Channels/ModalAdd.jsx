@@ -1,12 +1,12 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import * as Yup from 'yup';
 import { Modal } from 'react-bootstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { useSelector, useDispatch } from 'react-redux';
-import { setActiveChannel } from '../../../app/slices/channelsSlice';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
+import { setActiveChannel } from '../../../app/slices/channelsSlice';
 
 const ModalAdd = ({ show, handleClose }) => {
   const { t } = useTranslation();
@@ -14,7 +14,10 @@ const ModalAdd = ({ show, handleClose }) => {
   const channels = useSelector((state) => state.channels.channels).map((channel) => channel.name);
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required(t('required_field')).min(3, t('character_limit')).max(20, t('character_limit')),
+    name: Yup.string()
+      .required(t('required_field'))
+      .min(3, t('character_limit'))
+      .max(20, t('character_limit')),
   });
 
   const postChannel = async ({ name }, { setErrors }) => {
@@ -35,15 +38,11 @@ const ModalAdd = ({ show, handleClose }) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        }
+        },
       );
       dispatch(setActiveChannel(res.data));
       handleClose();
-      toast.success(t('channel_created')),
-        {
-          closeOnClick: true,
-          draggable: true,
-        };
+      toast.success(t('channel_created'));
     }
   };
 
