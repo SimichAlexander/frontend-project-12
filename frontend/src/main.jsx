@@ -6,7 +6,7 @@ import { Provider, ErrorBoundary } from '@rollbar/react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { store } from './app/store.js';
+import store from './app/store.js';
 import './init.js';
 import App from './App.jsx';
 
@@ -26,6 +26,6 @@ createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </ErrorBoundary>
     </Provider>
-  </ReduxProvider>
+  </ReduxProvider>,
   // </StrictMode>
 );
