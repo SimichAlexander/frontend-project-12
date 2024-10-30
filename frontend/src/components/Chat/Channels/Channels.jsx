@@ -24,7 +24,7 @@ const Channels = () => {
       dispatch(setChannels(resChannels.data));
     };
     getChannels();
-  }, [getChannels]);
+  }, []);
 
   return (
     <>
