@@ -14,16 +14,15 @@ const Channels = () => {
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channels.channels);
 
-  const getChannels = async () => {
-    const resChannels = await axios.get('/api/v1/channels', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    dispatch(setChannels(resChannels.data));
-  };
-
   useEffect(() => {
+    const getChannels = async () => {
+      const resChannels = await axios.get('/api/v1/channels', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      dispatch(setChannels(resChannels.data));
+    };
     getChannels();
   }, [getChannels]);
 
@@ -48,10 +47,15 @@ const Channels = () => {
           </svg>
           <span className="visually-hidden">{t('plus')}</span>
         </Button>
-        {showModalAdd && <ModalAdd show={showModalAdd} handleClose={() => setShowModalAdd(false)} />}
+        {showModalAdd && (
+          <ModalAdd show={showModalAdd} handleClose={() => setShowModalAdd(false)} />
+        )}
       </div>
 
-      <Nav id="channels-box" className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+      <Nav
+        id="channels-box"
+        className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+      >
         {channels.map((channel) => (
           <Nav.Item key={channel.id} className="w-100">
             <Channel channel={channel} />

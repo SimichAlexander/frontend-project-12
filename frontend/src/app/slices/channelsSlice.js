@@ -13,11 +13,14 @@ const slice = createSlice({
     }),
     renameChannel: (state, { payload: { id, name } }) => ({
       ...state,
-      channels: state.channels.map((channel) => (channel.id === id ? { ...channel, name } : channel)),
+      channels: state.channels.map((channel) =>
+        channel.id === id ? { ...channel, name } : channel,
+      ),
     }),
   },
 });
 
-export const { setChannels, setActiveChannel, addChannel, removeChannel, renameChannel } = slice.actions;
+export const { setChannels, setActiveChannel, addChannel, removeChannel, renameChannel } =
+  slice.actions;
 
 export default slice.reducer;

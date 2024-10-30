@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { setActiveChannel } from '../../../app/slices/channelsSlice';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { setActiveChannel } from '../../../app/slices/channelsSlice';
 
 const ModalRemove = ({ show, channelId, handleClose }) => {
   const { t } = useTranslation();

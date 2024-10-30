@@ -62,7 +62,9 @@ const Signup = () => {
                         required
                         placeholder={t('character_limit')}
                         id="username"
-                        className={`form-control ${errors.username && touched.username && 'is-invalid'}`}
+                        className={`form-control ${
+                          errors.username && touched.username && 'is-invalid'
+                        }`}
                       />
                       <label className="form-label" htmlFor="username">
                         {t('user_name')}
@@ -80,7 +82,9 @@ const Signup = () => {
                         id="password"
                         aria-describedby="passwordHelpBlock"
                         aria-autocomplete="list"
-                        className={`form-control ${errors.password && touched.password && 'is-invalid'}`}
+                        className={`form-control ${
+                          errors.password && touched.password && 'is-invalid'
+                        }`}
                       />
                       <label className="form-label" htmlFor="password">
                         {t('password')}
@@ -102,7 +106,11 @@ const Signup = () => {
                       <label className="form-label" htmlFor="confirmPassword">
                         {t('confirm_password')}
                       </label>
-                      <ErrorMessage name="confirmPassword" component="div" className="invalid-tooltip" />
+                      <ErrorMessage
+                        name="confirmPassword"
+                        component="div"
+                        className="invalid-tooltip"
+                      />
                     </div>
                     <button type="submit" className="w-100 btn btn-outline-primary">
                       {t('sign_up')}

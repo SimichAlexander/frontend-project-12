@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveChannel } from '../../../app/slices/channelsSlice.js';
+import { useTranslation } from 'react-i18next';
 import { Button, Dropdown } from 'react-bootstrap';
 import ModalRemove from './ModalRemove.jsx';
 import ModalRename from './ModalRename.jsx';
-import { useTranslation } from 'react-i18next';
+import { setActiveChannel } from '../../../app/slices/channelsSlice.js';
 
 const Channel = ({ channel }) => {
   const { t } = useTranslation();
@@ -59,8 +59,16 @@ const Channel = ({ channel }) => {
         </Dropdown>
       )}
 
-      <ModalRemove show={showModalRemove} channelId={channel.id} handleClose={() => setShowModalRemove(false)} />
-      <ModalRename show={showModalRename} channel={channel} handleClose={() => setShowModalRename(false)} />
+      <ModalRemove
+        show={showModalRemove}
+        channelId={channel.id}
+        handleClose={() => setShowModalRemove(false)}
+      />
+      <ModalRename
+        show={showModalRename}
+        channel={channel}
+        handleClose={() => setShowModalRename(false)}
+      />
     </>
   );
 };
