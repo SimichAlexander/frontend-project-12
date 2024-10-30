@@ -1,7 +1,9 @@
 import axios from 'axios';
 import * as Yup from 'yup';
 import { Modal } from 'react-bootstrap';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { 
+  Formik, Form, Field, ErrorMessage 
+} from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';

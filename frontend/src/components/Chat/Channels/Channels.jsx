@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Nav } from 'react-bootstrap';
 import axios from 'axios';
-import { setChannels } from '../../../app/slices/channelsSlice.js';
+import { useTranslation } from 'react-i18next';
 import Channel from './Channel.jsx';
 import ModalAdd from './ModalAdd.jsx';
-import { useTranslation } from 'react-i18next';
+import { setChannels } from '../../../app/slices/channelsSlice.js';
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ const Channels = () => {
       dispatch(setChannels(resChannels.data));
     };
     getChannels();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
