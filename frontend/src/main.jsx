@@ -1,4 +1,3 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -16,7 +15,6 @@ const rollbarConfig = {
 };
 
 createRoot(document.getElementById('root')).render(
-  // <StrictMode>
   <ReduxProvider store={store}>
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
@@ -26,6 +24,5 @@ createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </ErrorBoundary>
     </Provider>
-  </ReduxProvider>,
-  // </StrictMode>
+  </ReduxProvider>
 );
