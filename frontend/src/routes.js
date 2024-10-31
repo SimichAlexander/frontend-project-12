@@ -8,7 +8,7 @@ const routes = {
   api: {
     channels: () => '/api/v1/channels',
     messages: () => '/api/v1/messages',
-  }
+  },
 };
 
 export default routes;

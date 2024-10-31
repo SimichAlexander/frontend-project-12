@@ -23,7 +23,7 @@ const SendMessageForm = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      }
+      },
     );
     setFieldValue('body', '');
   };

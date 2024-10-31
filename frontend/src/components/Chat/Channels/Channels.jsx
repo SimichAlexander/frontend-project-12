@@ -16,7 +16,6 @@ const Channels = () => {
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channels.channels);
 
-  routes.api.channels()
   useEffect(() => {
     const getChannels = async () => {
       const resChannels = await axios.get(routes.api.channels(), {
