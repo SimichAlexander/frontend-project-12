@@ -30,7 +30,7 @@ const ModalRename = ({ show, channel, handleClose }) => {
         name: t('must_be_unique'),
       });
     } else {
-      await renameChannel({id: channel.id, name: filteredName});
+      await renameChannel({ id: channel.id, name: filteredName });
       handleClose();
       toast.success(t('channel_renamed'));
     }
