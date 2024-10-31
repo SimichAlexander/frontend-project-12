@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as Yup from 'yup';
 import { Modal } from 'react-bootstrap';
 import {
@@ -8,12 +7,12 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
-import routes from '../../../routes';
+import { useRenameChannelMutation } from '../../../api/services/channelsApi';
 
 const ModalRename = ({ show, channel, handleClose }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channels.channels).map((item) => item.name);
-
+  const [renameChannel] = useRenameChannelMutation();
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required(t('required_field'))
@@ -21,7 +20,7 @@ const ModalRename = ({ show, channel, handleClose }) => {
       .max(20, t('character_limit')),
   });
 
-  const renameChannel = async ({ name }, { setErrors }) => {
+  const patchChannel = async ({ name }, { setErrors }) => {
     const filteredName = filter.clean(name);
     if (channels.includes(filteredName)) {
       if (name !== filteredName) {
@@ -31,15 +30,7 @@ const ModalRename = ({ show, channel, handleClose }) => {
         name: t('must_be_unique'),
       });
     } else {
-      await axios.patch(
-        `${routes.api.channels()}/${channel.id}`,
-        { name: filteredName },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      );
+      await renameChannel({id: channel.id, name: filteredName});
       handleClose();
       toast.success(t('channel_renamed'));
     }
@@ -57,7 +48,7 @@ const ModalRename = ({ show, channel, handleClose }) => {
             name: channel.name || '',
           }}
           validationSchema={validationSchema}
-          onSubmit={renameChannel}
+          onSubmit={patchChannel}
         >
           {({ errors, touched }) => (
             <Form className="">

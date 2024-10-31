@@ -17,7 +17,6 @@
     "@reduxjs/toolkit": "^2.2.8",
     "@rollbar/react": "^0.11.1",
     "@vitejs/plugin-react": "^4.3.2",
-    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "formik": "^2.4.6",
     "i18next": "^23.16.4",

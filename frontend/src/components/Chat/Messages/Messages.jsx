@@ -1,36 +1,23 @@
-import axios from 'axios';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import SendMessageForm from './SendMessageForm.jsx';
 import { setMessages } from '../../../api/slices/messagesSlice.js';
-import routes from '../../../routes.js';
+import { useGetMessagesQuery } from '../../../api/services/messagesApi.js';
 
 const Messages = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const activeChannel = useSelector((state) => state.channels.activeChannel);
   const messages = useSelector((state) => state.messages.messages);
   const messagesCount = messages.filter((message) => message.channelId === activeChannel.id).length;
+  const { data } = useGetMessagesQuery();
 
   useEffect(() => {
-    async function fetchData() {
-      if (!localStorage.getItem('token')) {
-        navigate('/login');
-      } else {
-        const token = localStorage.getItem('token');
-        const resMessages = await axios.get(routes.api.messages(), {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        dispatch(setMessages(resMessages.data));
-      }
+    if (data) {
+      dispatch(setMessages(data));
     }
-    fetchData();
-  }, [dispatch, navigate]);
+  }, [data, dispatch]);
 
   return (
     <div className="d-flex flex-column h-100">

@@ -2,31 +2,24 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Nav } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import Channel from './Channel.jsx';
 import ModalAdd from './ModalAdd.jsx';
 import { setChannels } from '../../../api/slices/channelsSlice.js';
-import routes from '../../../routes.js';
+import { useGetChannelsQuery } from '../../../api/services/channelsApi.js';
 
 const Channels = () => {
   const { t } = useTranslation();
   const [showModalAdd, setShowModalAdd] = useState(false);
-
   const dispatch = useDispatch();
   const channels = useSelector((state) => state.channels.channels);
+  const { data } = useGetChannelsQuery();
 
   useEffect(() => {
-    const getChannels = async () => {
-      const resChannels = await axios.get(routes.api.channels(), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      dispatch(setChannels(resChannels.data));
-    };
-    getChannels();
-  }, [dispatch]);
+    if (data) {
+      dispatch(setChannels(data));
+    }
+  }, [data, dispatch]);
 
   return (
     <>

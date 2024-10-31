@@ -1,30 +1,22 @@
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
-import routes from '../../../routes';
+import { useAddMessageMutation } from '../../../api/services/messagesApi';
 
 const SendMessageForm = () => {
   const { t } = useTranslation();
   const activeChannel = useSelector((state) => state.channels.activeChannel);
+  const [addMessage] = useAddMessageMutation();
 
   const handleSendMessage = async ({ body }, { setFieldValue }) => {
     const filteredBody = filter.clean(body);
-    await axios.post(
-      routes.api.messages(),
-      {
-        body: filteredBody,
-        channelId: activeChannel.id,
-        username: localStorage.getItem('username'),
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      },
-    );
+    await addMessage({
+      body: filteredBody,
+      channelId: activeChannel.id,
+      username: localStorage.getItem('username'),
+    });
     setFieldValue('body', '');
   };
 

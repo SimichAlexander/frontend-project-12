@@ -33,11 +33,11 @@ const App = ({ socket }) => {
 
   return (
     <Routes>
-      <Route path={routes.frontend.homePagePath()} element={<Layout />}>
+      <Route path={routes.homePagePath()} element={<Layout />}>
         <Route index element={<Chat />} />
-        <Route path={routes.frontend.loginPagePath()} element={<Login />} />
-        <Route path={routes.frontend.signupPagePath()} element={<Signup />} />
-        <Route path={routes.frontend.notFoundPagePath()} element={<NotFoundPage />} />
+        <Route path={routes.loginPagePath()} element={<Login />} />
+        <Route path={routes.signupPagePath()} element={<Signup />} />
+        <Route path={routes.notFoundPagePath()} element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

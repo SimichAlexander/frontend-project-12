@@ -1,22 +1,19 @@
-import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { setActiveChannel } from '../../../api/slices/channelsSlice';
-import routes from '../../../routes';
+import { useRemoveChannelMutation } from '../../../api/services/channelsApi';
 
 const ModalRemove = ({ show, channelId, handleClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [removeChannel] = useRemoveChannelMutation();
 
-  const removeChannel = async (e) => {
+  const deleteChannel = async (e) => {
     e.preventDefault();
-    await axios.delete(`${routes.api.channels()}/${channelId}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
+    await removeChannel(channelId);
+
     handleClose();
     dispatch(setActiveChannel({ id: '1', name: 'general', removable: false }));
     toast.success(t('channel_deleted'));
@@ -32,7 +29,7 @@ const ModalRemove = ({ show, channelId, handleClose }) => {
           <Button variant="secondary" onClick={handleClose} className="me-2">
             {t('cancel')}
           </Button>
-          <Button variant="danger" onClick={removeChannel}>
+          <Button variant="danger" onClick={deleteChannel}>
             {t('delete')}
           </Button>
         </div>
