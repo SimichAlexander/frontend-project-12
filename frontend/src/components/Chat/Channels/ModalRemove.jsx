@@ -3,7 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { setActiveChannel } from '../../../app/slices/channelsSlice';
+import { setActiveChannel } from '../../../api/slices/channelsSlice';
+import routes from '../../../routes';
 
 const ModalRemove = ({ show, channelId, handleClose }) => {
   const { t } = useTranslation();
@@ -11,7 +12,7 @@ const ModalRemove = ({ show, channelId, handleClose }) => {
 
   const removeChannel = async (e) => {
     e.preventDefault();
-    await axios.delete(`/api/v1/channels/${channelId}`, {
+    await axios.delete(`${routes.api.channels()}/${channelId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },

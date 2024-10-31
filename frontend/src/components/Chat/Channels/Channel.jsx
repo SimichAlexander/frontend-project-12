@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Dropdown } from 'react-bootstrap';
 import ModalRemove from './ModalRemove.jsx';
 import ModalRename from './ModalRename.jsx';
-import { setActiveChannel } from '../../../app/slices/channelsSlice.js';
+import { setActiveChannel } from '../../../api/slices/channelsSlice.js';
 
 const Channel = ({ channel }) => {
   const { t } = useTranslation();

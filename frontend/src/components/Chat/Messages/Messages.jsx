@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import SendMessageForm from './SendMessageForm.jsx';
-import { setMessages } from '../../../app/slices/messagesSlice.js';
+import { setMessages } from '../../../api/slices/messagesSlice.js';
+import routes from '../../../routes.js';
 
 const Messages = () => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ const Messages = () => {
         navigate('/login');
       } else {
         const token = localStorage.getItem('token');
-        const resMessages = await axios.get('/api/v1/messages', {
+        const resMessages = await axios.get(routes.api.messages(), {
           headers: {
             Authorization: `Bearer ${token}`,
           },

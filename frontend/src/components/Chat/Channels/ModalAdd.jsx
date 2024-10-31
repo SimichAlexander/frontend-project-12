@@ -8,7 +8,8 @@ import {
 } from 'formik';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
-import { setActiveChannel } from '../../../app/slices/channelsSlice';
+import { setActiveChannel } from '../../../api/slices/channelsSlice';
+import routes from '../../../routes';
 
 const ModalAdd = ({ show, handleClose }) => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ const ModalAdd = ({ show, handleClose }) => {
       });
     } else {
       const res = await axios.post(
-        '/api/v1/channels',
+        routes.api.channels(),
         { name: filteredName },
         {
           headers: {

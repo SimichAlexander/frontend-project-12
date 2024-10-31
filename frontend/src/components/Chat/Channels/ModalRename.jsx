@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
+import routes from '../../../routes';
 
 const ModalRename = ({ show, channel, handleClose }) => {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ const ModalRename = ({ show, channel, handleClose }) => {
       });
     } else {
       await axios.patch(
-        `/api/v1/channels/${channel.id}`,
+        `${routes.api.channels()}/${channel.id}`,
         { name: filteredName },
         {
           headers: {
