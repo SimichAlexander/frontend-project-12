@@ -14,8 +14,8 @@ export default configureStore({
     messages: messagesReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
-      authApi.middleware,
-      channelsApi.middleware,
-      messagesApi.middleware,
-    ),
+    authApi.middleware,
+    channelsApi.middleware,
+    messagesApi.middleware,
+  ),
 });
