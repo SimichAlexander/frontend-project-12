@@ -13,7 +13,7 @@ const Layout = () => {
   };
 
   return (
-    <div className="d-flex flex-column h-100">
+    <>
       <Navbar className="shadow-sm" expand="lg" bg="white">
         <Container>
           <Link className="navbar-brand" to="/">
@@ -27,7 +27,7 @@ const Layout = () => {
         </Container>
       </Navbar>
       <Outlet />
-    </div>
+    </>
   );
 };
 

@@ -24,8 +24,6 @@ const Signup = () => {
     const { username, password } = values;
     try {
       const response = await signup({ username, password });
-      localStorage.setItem('username', response.data.username);
-      localStorage.setItem('token', response.data.token);
       navigate('/');
     } catch (error) {
       setErrors({

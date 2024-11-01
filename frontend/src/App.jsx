@@ -32,14 +32,16 @@ const App = ({ socket }) => {
   });
 
   return (
-    <Routes>
-      <Route path={routes.homePagePath()} element={<Layout />}>
-        <Route index element={<Chat />} />
-        <Route path={routes.loginPagePath()} element={<Login />} />
-        <Route path={routes.signupPagePath()} element={<Signup />} />
-        <Route path={routes.notFoundPagePath()} element={<NotFoundPage />} />
-      </Route>
-    </Routes>
+    <div className="d-flex flex-column h-100">
+      <Routes>
+        <Route path={routes.homePagePath()} element={<Layout />}>
+          <Route index element={<Chat />} />
+          <Route path={routes.loginPagePath()} element={<Login />} />
+          <Route path={routes.signupPagePath()} element={<Signup />} />
+          <Route path={routes.notFoundPagePath()} element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </div>
   );
 };
 

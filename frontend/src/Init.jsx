@@ -7,9 +7,14 @@ import store from './api/store.js';
 import App from './App.jsx';
 
 const Init = ({ socket }) => {
+  console.log('process.env.NODE_ENV =', process.env.NODE_ENV);
+  const isProd = process.env.NODE_ENV === 'production';
   const rollbarConfig = {
-    accessToken: '309a72e2808248cab0b92cd26d768926',
-    environment: 'testenv',
+    enabled: isProd,
+    accessToken: import.meta.env.ROLLBAR_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    environment: 'production',
   };
 
   return (

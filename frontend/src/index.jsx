@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { io } from 'socket.io-client';
-import Init from './init.jsx';
+import Init from './Init.jsx';
 import resources from './locales/index.js';
 
 const socket = io();
