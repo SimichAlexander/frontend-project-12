@@ -15,8 +15,8 @@ export const authApi = createApi({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          localStorage.setItem('username', data.username);
-          localStorage.setItem('token', data.token);
+          // localStorage.setItem('username', data.username);
+          // localStorage.setItem('token', data.token);
         } catch (error) {
           console.error('Mutation failed:', error);
         }
