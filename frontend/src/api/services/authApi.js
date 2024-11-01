@@ -12,15 +12,15 @@ export const authApi = createApi({
         method: 'POST',
         body: credentials,
       }),
-      async onQueryStarted(arg, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          // localStorage.setItem('username', data.username);
-          // localStorage.setItem('token', data.token);
-        } catch (error) {
-          console.error('Mutation failed:', error);
-        }
-      },
+      // async onQueryStarted(arg, { queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled;
+      //     localStorage.setItem('username', data.username);
+      //     localStorage.setItem('token', data.token);
+      //   } catch (error) {
+      //     console.error('Mutation failed:', error);
+      //   }
+      // },
     }),
     signup: builder.mutation({
       query: (credentials) => ({
@@ -28,15 +28,15 @@ export const authApi = createApi({
         method: 'POST',
         body: credentials,
       }),
-      async onQueryStarted(arg, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          // localStorage.setItem('username', data.username);
-          // localStorage.setItem('token', data.token);
-        } catch (error) {
-          console.error('Mutation failed:', error);
-        }
-      },
+      // async onQueryStarted(arg, { queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled;
+      //     localStorage.setItem('username', data.username);
+      //     localStorage.setItem('token', data.token);
+      //   } catch (error) {
+      //     console.error('Mutation failed:', error);
+      //   }
+      // },
     }),
   }),
 });
