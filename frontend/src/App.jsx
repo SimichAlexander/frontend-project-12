@@ -1,6 +1,8 @@
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import filter from 'leo-profanity';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from './components/Layout.jsx';
 import Chat from './components/Chat/Chat.jsx';
 import Login from './components/Login.jsx';
@@ -32,16 +34,19 @@ const App = ({ socket }) => {
   });
 
   return (
-    <div className="d-flex flex-column h-100">
-      <Routes>
-        <Route path={routes.homePagePath()} element={<Layout />}>
-          <Route index element={<Chat />} />
-          <Route path={routes.loginPagePath()} element={<Login />} />
-          <Route path={routes.signupPagePath()} element={<Signup />} />
-          <Route path={routes.notFoundPagePath()} element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </div>
+    <BrowserRouter>
+      <div className="d-flex flex-column h-100">
+        <Routes>
+          <Route path={routes.homePagePath()} element={<Layout />}>
+            <Route index element={<Chat />} />
+            <Route path={routes.loginPagePath()} element={<Login />} />
+            <Route path={routes.signupPagePath()} element={<Signup />} />
+            <Route path={routes.notFoundPagePath()} element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </div>
+      <ToastContainer closeOnClick draggable />
+    </BrowserRouter>
   );
 };
 

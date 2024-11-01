@@ -23,10 +23,7 @@ const Signup = () => {
   const handleSubmit = async (values, { setErrors }) => {
     const { username, password } = values;
     try {
-      const response = await signup({ username, password });
-      console.log(response);
-      localStorage.setItem('username', response.data.username);
-      localStorage.setItem('token', response.data.token);
+      await signup({ username, password }).unwrap();
       navigate('/');
     } catch (error) {
       setErrors({
