@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import filter from 'leo-profanity';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Layout from './components/Layout.jsx';
-import Chat from './components/Chat/Chat.jsx';
+import Header from './components/Header.jsx';
+import AuthRedirect from './components/Chat/AuthRedirect.jsx';
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
 import NotFoundPage from './components/NotFoundPage.jsx';
@@ -36,13 +36,12 @@ const App = ({ socket }) => {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column h-100">
+        <Header />
         <Routes>
-          <Route path={routes.homePagePath()} element={<Layout />}>
-            <Route index element={<Chat />} />
-            <Route path={routes.loginPagePath()} element={<Login />} />
-            <Route path={routes.signupPagePath()} element={<Signup />} />
-            <Route path={routes.notFoundPagePath()} element={<NotFoundPage />} />
-          </Route>
+          <Route path="/" element={<AuthRedirect />} />
+          <Route path={routes.loginPath()} element={<Login />} />
+          <Route path={routes.registerPath()} element={<Signup />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
       <ToastContainer closeOnClick draggable />

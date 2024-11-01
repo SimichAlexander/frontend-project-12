@@ -1,8 +1,6 @@
 const routes = {
-  homePagePath: () => '/',
-  loginPagePath: () => '/login',
-  signupPagePath: () => '/signup',
-  notFoundPagePath: () => '*',
+  loginPath: () => '/login',
+  registerPath: () => '/signup',
 };
 
 export default routes;
