@@ -1,21 +1,10 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Chat from './Chat';
+import routes from '../../routes';
 
 const AuthRedirect = () => {
-  const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  useEffect(() => {
-    if (!token) {
-      navigate('/login');
-    }
-  }, [token, navigate]);
-
-  if (!token) {
-    return null;
-  }
-
-  return <Chat />;
+  return token ? <Chat /> : <Navigate to={routes.loginPath()} />;
 };
 
 export default AuthRedirect;
