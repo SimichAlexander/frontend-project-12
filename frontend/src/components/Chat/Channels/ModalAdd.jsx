@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Modal } from 'react-bootstrap';
@@ -8,13 +8,13 @@ import {
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 import { setActiveChannel } from '../../../api/slices/channelsSlice';
-import { useAddChannelMutation } from '../../../api/services/channelsApi';
+import { useAddChannelMutation, useGetChannelsQuery } from '../../../api/services/channelsApi';
 
 const ModalAdd = ({ show, handleClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const channels = useSelector((state) => state.channels.channels).map((channel) => channel.name);
   const [addChannel] = useAddChannelMutation();
+  const { data: channels } = useGetChannelsQuery();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -23,10 +23,15 @@ const ModalAdd = ({ show, handleClose }) => {
       .max(20, t('character_limit')),
   });
 
+  if (!channels) {
+    return null;
+  }
+
+  const channelNames = channels.map((channel) => channel.name);
+
   const postChannel = async ({ name }, { setErrors }) => {
     const filteredName = filter.clean(name);
-
-    if (channels.includes(filteredName)) {
+    if (channelNames.includes(filteredName)) {
       if (name !== filteredName) {
         return;
       }

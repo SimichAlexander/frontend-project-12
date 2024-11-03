@@ -3,16 +3,16 @@ import { Modal } from 'react-bootstrap';
 import {
   Formik, Form, Field, ErrorMessage,
 } from 'formik';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
-import { useRenameChannelMutation } from '../../../api/services/channelsApi';
+import { useRenameChannelMutation, useGetChannelsQuery } from '../../../api/services/channelsApi';
 
 const ModalRename = ({ show, channel, handleClose }) => {
   const { t } = useTranslation();
-  const channels = useSelector((state) => state.channels.channels).map((item) => item.name);
+  const { data: channels } = useGetChannelsQuery();
   const [renameChannel] = useRenameChannelMutation();
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required(t('required_field'))
@@ -20,9 +20,15 @@ const ModalRename = ({ show, channel, handleClose }) => {
       .max(20, t('character_limit')),
   });
 
+  if (!channels) {
+    return null;
+  }
+
+  const channelNames = channels.map((item) => item.name);
+
   const patchChannel = async ({ name }, { setErrors }) => {
     const filteredName = filter.clean(name);
-    if (channels.includes(filteredName)) {
+    if (channelNames.includes(filteredName)) {
       if (name !== filteredName) {
         return;
       }

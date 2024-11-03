@@ -1,25 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { Button, Nav } from 'react-bootstrap';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import Channel from './Channel.jsx';
 import ModalAdd from './ModalAdd.jsx';
-import { setChannels } from '../../../api/slices/channelsSlice.js';
 import { useGetChannelsQuery } from '../../../api/services/channelsApi.js';
 
 const Channels = () => {
   const { t } = useTranslation();
   const [showModalAdd, setShowModalAdd] = useState(false);
-  const dispatch = useDispatch();
-  const channels = useSelector((state) => state.channels.channels);
-  const { data } = useGetChannelsQuery();
-
-  useEffect(() => {
-    if (data) {
-      dispatch(setChannels(data));
-    }
-  }, [data, dispatch]);
+  const { data: channels } = useGetChannelsQuery();
 
   return (
     <>
@@ -42,7 +32,7 @@ const Channels = () => {
         id="channels-box"
         className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
       >
-        {channels.map((channel) => (
+        {channels && channels.map((channel) => (
           <Nav.Item key={channel.id} className="w-100">
             <Channel channel={channel} />
           </Nav.Item>

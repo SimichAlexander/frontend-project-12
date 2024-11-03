@@ -1,23 +1,19 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import SendMessageForm from './SendMessageForm.jsx';
-import { setMessages } from '../../../api/slices/messagesSlice.js';
 import { useGetMessagesQuery } from '../../../api/services/messagesApi.js';
 
 const Messages = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const activeChannel = useSelector((state) => state.channels.activeChannel);
-  const messages = useSelector((state) => state.messages.messages);
-  const messagesCount = messages.filter((message) => message.channelId === activeChannel.id).length;
-  const { data } = useGetMessagesQuery();
 
-  useEffect(() => {
-    if (data) {
-      dispatch(setMessages(data));
-    }
-  }, [data, dispatch]);
+  const { data: messages } = useGetMessagesQuery();
+
+  if (!messages) {
+    return null;
+  }
+
+  const messagesCount = messages.filter((message) => message.channelId === activeChannel.id).length;
 
   return (
     <div className="d-flex flex-column h-100">
@@ -37,6 +33,7 @@ const Messages = () => {
 
       <div id="messages-box" className="chat-messages overflow-auto px-5">
         {messages
+        && messages
           .filter((message) => message.channelId === activeChannel.id)
           .map((message) => (
             <div key={message.id} className="text-break mb-2">
