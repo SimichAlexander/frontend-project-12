@@ -1,14 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { getLocalStorage, clearLocalStorage } from '../api/services/authApi.js';
 
 const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+
   const handleLogout = () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('token');
+    clearLocalStorage();
     navigate('/login');
   };
 
@@ -18,7 +18,7 @@ const Header = () => {
         <Link className="navbar-brand" to="/">
           {t('app_title')}
         </Link>
-        {token && (
+        {getLocalStorage().token && (
           <Button onClick={handleLogout} variant="primary">
             {t('logout')}
           </Button>

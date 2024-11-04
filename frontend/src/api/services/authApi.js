@@ -41,4 +41,14 @@ export const authApi = createApi({
   }),
 });
 
+export const getLocalStorage = () => ({
+  username: localStorage.getItem('username'),
+  token: localStorage.getItem('token'),
+});
+
+export const clearLocalStorage = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+};
+
 export const { useLoginMutation, useSignupMutation } = authApi;
